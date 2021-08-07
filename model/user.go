@@ -9,3 +9,7 @@ type User struct {
 	Name  string `json:"name"`
 	Token string
 }
+
+func NewUser() User {
+	return User{}
+}
