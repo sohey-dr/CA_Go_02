@@ -2,21 +2,17 @@ package main
 
 import (
 	"net/http"
-	"fmt"
 
 	"CA_Go/database"
 	"CA_Go/model"
+	"CA_Go/controller"
 )
 
 func main() {
 	db := database.DbConnect()
-	http.HandleFunc("/user/create", userCreate)
+	http.HandleFunc("/user/create", controller.UserCreate)
 	defer db.Close()
 
 	db.AutoMigrate(&model.User{})
 	http.ListenAndServe(":8080", nil)
-}
-
-func userCreate(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello World from Go.")
 }
