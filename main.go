@@ -2,16 +2,21 @@ package main
 
 import (
 	"net/http"
-	"github.com/labstack/echo"
+	"fmt"
+
+	"CA_Go/database"
+	"CA_Go/model"
 )
 
 func main() {
-	e := echo.New()
-	e.GET("/user/create", userCreate)
-	
-	e.Start(":8080")
+	db := database.DbConnect()
+	http.HandleFunc("/user/create", userCreate)
+	defer db.Close()
+
+	db.AutoMigrate(&model.User{})
+	http.ListenAndServe(":8080", nil)
 }
 
-func userCreate(c echo.Context) error {
-	return c.JSON(http.StatusOK, "ok")
+func userCreate(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "Hello World from Go.")
 }
