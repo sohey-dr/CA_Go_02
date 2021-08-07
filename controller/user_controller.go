@@ -31,6 +31,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	}
 
 	user := model.NewUser()
+	user.Name = data.Name
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
