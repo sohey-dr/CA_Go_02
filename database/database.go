@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
+	"CA_Go/model"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -28,5 +29,6 @@ func DbConnect() *gorm.DB {
 	}
 
 	fmt.Println("db connected: ", &db)
+	db.AutoMigrate(&model.User{})
 	return db
 }
