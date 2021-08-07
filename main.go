@@ -4,15 +4,18 @@ import (
 	"net/http"
 
 	"CA_Go/database"
-	"CA_Go/model"
 	"CA_Go/controller"
 )
 
 func main() {
 	db := database.DbConnect()
-	http.HandleFunc("/user/create", controller.UserCreate)
+
+	// NOTE:HandleFuncを1行で書いて、第2引数のメソッドに第3引数を渡したい
+	http.HandleFunc("/user/create", func(w http.ResponseWriter, r *http.Request) {
+    controller.CreateUser(w, r, db)
+  })
+
 	defer db.Close()
 
-	db.AutoMigrate(&model.User{})
 	http.ListenAndServe(":8080", nil)
 }
