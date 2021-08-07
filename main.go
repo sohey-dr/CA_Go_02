@@ -2,15 +2,16 @@ package main
 
 import (
 	"net/http"
-	"fmt"
+	"github.com/labstack/echo"
 )
 
 func main() {
-	http.HandleFunc("/user/create", userCreate)
+	e := echo.New()
+	e.GET("/user/create", userCreate)
 	
-	http.ListenAndServe(":8080", nil)
+	e.Start(":8080")
 }
 
-func userCreate(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello World from Go.")
+func userCreate(c echo.Context) error {
+	return c.JSON(http.StatusOK, "ok")
 }
