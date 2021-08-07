@@ -3,11 +3,17 @@ package main
 import (
 	"net/http"
 	"fmt"
+
+	"CA_Go/database"
+	"CA_Go/model"
 )
 
 func main() {
+	db := database.DbConnect()
 	http.HandleFunc("/user/create", userCreate)
-	
+	defer db.Close()
+
+	db.AutoMigrate(&model.User{})
 	http.ListenAndServe(":8080", nil)
 }
 
