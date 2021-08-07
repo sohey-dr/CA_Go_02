@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"github.com/jinzhu/gorm"
 	"time"
+	"encoding/base64"
+	"github.com/jinzhu/gorm"
 
 	"CA_Go/model"
 )
@@ -29,9 +30,12 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 			fmt.Println("JSON Unmarshal error:", err)
 			return
 	}
+	
+	token := base64.StdEncoding.EncodeToString([]byte(data.Name))
 
 	user := model.NewUser()
 	user.Name = data.Name
+	user.Token = token
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
