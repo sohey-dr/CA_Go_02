@@ -12,6 +12,10 @@ import (
 	"CA_Go/model"
 )
 
+type TokenJson struct {
+	Token string `json:"token"`
+}
+
 func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
@@ -45,6 +49,14 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	db.NewRecord(user)
 	db.Create(&user)
 
+
+	tokenJson := TokenJson{}
+	tokenJson.Token = token
+	outputJson, err := json.Marshal(&tokenJson)
+	if err != nil {
+		panic(err)
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprint(w, string(body))
+	fmt.Fprint(w, string(outputJson))
 }
