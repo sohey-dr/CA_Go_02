@@ -4,17 +4,24 @@ import (
 	"os"
 	"fmt"
 	"github.com/jinzhu/gorm"
+	"github.com/joho/godotenv"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func DbConnect() *gorm.DB {
-	DBMS := "mysql"
-	USER := os.Getenv("DB_USER")
-	PASS := os.Getenv("PASSWORD")
-	PROTOCOL := "tcp(" + os.Getenv("DOMAIN") + ":" + os.Getenv("PORT") + ")"
-	DBNAME := os.Getenv("DBNAME") + "?parseTime=true&loc=Asia%2FTokyo"
-	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME
+	err := godotenv.Load()
+	if err != nil {
+		panic(err.Error())
+	}
 
-	db, err := gorm.Open(DBMS, CONNECT)
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("PASSWORD")
+	protcol := "tcp(" + os.Getenv("DOMAIN") + ":" + os.Getenv("PORT") + ")"
+	dbName := os.Getenv("DB_NAME") + "?charset=utf8&parseTime=true&loc=Local"
+	CONNECT := dbUser + ":" + dbPass + "@" + protcol + "/" + dbName
+
+	db, err := gorm.Open("mysql", CONNECT)
 
 	if err != nil {
 		panic(err.Error())
