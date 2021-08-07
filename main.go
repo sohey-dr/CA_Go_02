@@ -2,21 +2,20 @@ package main
 
 import (
 	"net/http"
-	"fmt"
 
 	"CA_Go/database"
-	"CA_Go/model"
+	"CA_Go/controller"
 )
 
 func main() {
 	db := database.DbConnect()
-	http.HandleFunc("/user/create", userCreate)
+
+	// NOTE:HandleFuncを1行で書いて、第2引数のメソッドに第3引数を渡したい
+	http.HandleFunc("/user/create", func(w http.ResponseWriter, r *http.Request) {
+    controller.CreateUser(w, r, db)
+  })
+
 	defer db.Close()
 
-	db.AutoMigrate(&model.User{})
 	http.ListenAndServe(":8080", nil)
-}
-
-func userCreate(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello World from Go.")
 }
