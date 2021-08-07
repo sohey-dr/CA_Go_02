@@ -13,6 +13,9 @@ import (
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+
 	if r.Method != "POST" {
 			fmt.Fprint(w, "Not post...")
 			return
@@ -39,6 +42,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
+	db.NewRecord(user)
+	db.Create(&user)
 
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprint(w, string(body))
