@@ -21,6 +21,13 @@ func UserCreate(w http.ResponseWriter, r *http.Request) {
 			return
 	}
 
+	jsonBytes := ([]byte)(body)
+	data := new(model.User)
+	if err := json.Unmarshal(jsonBytes, data); err != nil {
+			fmt.Println("JSON Unmarshal error:", err)
+			return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprint(w, string(body))
 }
