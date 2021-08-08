@@ -38,7 +38,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 			return
 	}
 	
-	token := base64.StdEncoding.EncodeToString([]byte(data.Name))
+	token := auth.GenerateToken()
 
 	user := model.NewUser()
 	user.Name = data.Name
