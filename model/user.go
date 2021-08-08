@@ -10,6 +10,14 @@ type User struct {
 	Token string
 }
 
+type CreateUserResponse struct {
+	Token string `json:"token"`
+}
+
+type GetUserResponse struct {
+	Name string `json:"name"`
+}
+
 func NewUser() User {
 	return User{}
 }
