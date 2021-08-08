@@ -88,3 +88,39 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprint(w, string(outputJson))
 }
+
+func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set( "Access-Control-Allow-Methods","PUT" )
+
+	if r.Method != "PUT" {
+		fmt.Fprint(w, "Not put...")
+		return
+	}
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+			fmt.Println("io error")
+			return
+	}
+
+	jsonBytes := ([]byte)(body)
+	data := new(model.User)
+	if err := json.Unmarshal(jsonBytes, data); err != nil {
+			fmt.Println("JSON Unmarshal error:", err)
+			return
+	}
+
+	xToken := r.Header.Get("x-token")
+	user := model.NewUser()
+
+	db.Where("token = ?", xToken).First(&user).Update("name", data.Name)
+	if user.ID == 0 {
+		fmt.Println("don't find user id:", user.ID)
+		return
+	}
+	fmt.Println("updated user id:", user.ID)
+
+	fmt.Fprint(w, "A successful response.")
+}

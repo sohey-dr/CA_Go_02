@@ -17,6 +17,9 @@ func main() {
 	http.HandleFunc("/user/get", func(w http.ResponseWriter, r *http.Request) {
     controller.GetUser(w, r, db)
   })
+	http.HandleFunc("/user/update", func(w http.ResponseWriter, r *http.Request) {
+    controller.UpdateUser(w, r, db)
+  })
 
 	defer db.Close()
 
