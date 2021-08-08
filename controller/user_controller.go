@@ -6,13 +6,13 @@ import (
 	"io/ioutil"
 	"net/http"
 	"time"
-	"encoding/base64"
 	"github.com/jinzhu/gorm"
 
 	"CA_Go/model"
+	"CA_Go/auth"
 )
 
-type TokenJson struct {
+type CreateUserResponse struct {
 	Token string `json:"token"`
 }
 
@@ -49,10 +49,9 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	db.NewRecord(user)
 	db.Create(&user)
 
-
-	tokenJson := TokenJson{}
-	tokenJson.Token = token
-	outputJson, err := json.Marshal(&tokenJson)
+	response := CreateUserResponse{}
+	response.Token = token
+	outputJson, err := json.Marshal(&response)
 	if err != nil {
 		panic(err)
 	}
