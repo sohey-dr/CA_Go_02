@@ -73,21 +73,8 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 		return
 	}
 
-	body, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-			fmt.Println("io error")
-			return
-	}
-
-	jsonBytes := ([]byte)(body)
-	data := new(model.User)
-	if err := json.Unmarshal(jsonBytes, data); err != nil {
-			fmt.Println("JSON Unmarshal error:", err)
-			return
-	}
-
-	user := model.NewUser()
 	xToken := r.Header.Get("x-token")
+	user := model.NewUser()
 
 	db.Where("token = ?", xToken).First(&user)
 
