@@ -12,14 +12,6 @@ import (
 	"CA_Go/auth"
 )
 
-type CreateUserResponse struct {
-	Token string `json:"token"`
-}
-
-type GetUserResponse struct {
-	Name string `json:"name"`
-}
-
 func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
@@ -53,7 +45,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	db.NewRecord(user)
 	db.Create(&user)
 
-	response := CreateUserResponse{}
+	response := model.CreateUserResponse{}
 	response.Token = token
 	outputJson, err := json.Marshal(&response)
 	if err != nil {
@@ -78,7 +70,7 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 
 	db.Where("token = ?", xToken).First(&user)
 
-	response := GetUserResponse{}
+	response := model.GetUserResponse{}
 	response.Name = user.Name
 	outputJson, err := json.Marshal(&response)
 	if err != nil {
