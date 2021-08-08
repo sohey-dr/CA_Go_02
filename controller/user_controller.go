@@ -25,21 +25,21 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 
 	if r.Method != "POST" {
-			fmt.Fprint(w, "Not post...")
-			return
+		fmt.Fprint(w, "Not post...")
+		return
 	}
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-			fmt.Println("io error")
-			return
+		fmt.Println("io error")
+		return
 	}
 
 	jsonBytes := ([]byte)(body)
 	data := new(model.User)
 	if err := json.Unmarshal(jsonBytes, data); err != nil {
-			fmt.Println("JSON Unmarshal error:", err)
-			return
+		fmt.Println("JSON Unmarshal error:", err)
+		return
 	}
 	
 	token := auth.GenerateToken()
@@ -101,15 +101,15 @@ func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-			fmt.Println("io error")
-			return
+		fmt.Println("io error")
+		return
 	}
 
 	jsonBytes := ([]byte)(body)
 	data := new(model.User)
 	if err := json.Unmarshal(jsonBytes, data); err != nil {
-			fmt.Println("JSON Unmarshal error:", err)
-			return
+		fmt.Println("JSON Unmarshal error:", err)
+		return
 	}
 
 	xToken := r.Header.Get("x-token")
