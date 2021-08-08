@@ -6,14 +6,18 @@ import (
 	"io/ioutil"
 	"net/http"
 	"time"
-	"encoding/base64"
 	"github.com/jinzhu/gorm"
 
 	"CA_Go/model"
+	"CA_Go/auth"
 )
 
-type TokenJson struct {
+type CreateUserResponse struct {
 	Token string `json:"token"`
+}
+
+type GetUserResponse struct {
+	Name string `json:"name"`
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
@@ -38,7 +42,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 			return
 	}
 	
-	token := base64.StdEncoding.EncodeToString([]byte(data.Name))
+	token := auth.GenerateToken()
 
 	user := model.NewUser()
 	user.Name = data.Name
@@ -49,10 +53,34 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	db.NewRecord(user)
 	db.Create(&user)
 
+	response := CreateUserResponse{}
+	response.Token = token
+	outputJson, err := json.Marshal(&response)
+	if err != nil {
+		panic(err)
+	}
 
-	tokenJson := TokenJson{}
-	tokenJson.Token = token
-	outputJson, err := json.Marshal(&tokenJson)
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Fprint(w, string(outputJson))
+}
+
+func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+
+	if r.Method != "GET" {
+		fmt.Fprint(w, "Not get...")
+		return
+	}
+
+	xToken := r.Header.Get("x-token")
+	user := model.NewUser()
+
+	db.Where("token = ?", xToken).First(&user)
+
+	response := GetUserResponse{}
+	response.Name = user.Name
+	outputJson, err := json.Marshal(&response)
 	if err != nil {
 		panic(err)
 	}

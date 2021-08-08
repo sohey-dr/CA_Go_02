@@ -14,6 +14,9 @@ func main() {
 	http.HandleFunc("/user/create", func(w http.ResponseWriter, r *http.Request) {
     controller.CreateUser(w, r, db)
   })
+	http.HandleFunc("/user/get", func(w http.ResponseWriter, r *http.Request) {
+    controller.GetUser(w, r, db)
+  })
 
 	defer db.Close()
 
