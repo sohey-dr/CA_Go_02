@@ -13,6 +13,7 @@ import (
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
+	// handlerを分ける(ヘッダーセットやbody読み取る部分、レスポンス部分)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 
