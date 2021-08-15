@@ -121,5 +121,8 @@ func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	}
 	fmt.Println("updated user id:", user.ID)
 
-	fmt.Fprint(w, "A successful response.")
+	fprint, err := fmt.Fprint(w, "A successful response.")
+	if err != nil {
+		return
+	}
 }
