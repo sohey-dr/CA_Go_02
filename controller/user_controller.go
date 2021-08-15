@@ -12,7 +12,7 @@ import (
 	"CA_Go/model"
 )
 
-func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
+func CreateUser(w http.ResponseWriter, r *http.Request) {
 	// handlerを分ける(ヘッダーセットやbody読み取る部分、レスポンス部分)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
@@ -63,7 +63,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	}
 }
 
-func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
+func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 
@@ -95,7 +95,7 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	return
 }
 
-func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
