@@ -3,22 +3,22 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/jinzhu/gorm"
 	"io/ioutil"
 	"net/http"
 	"time"
 
 	"CA_Go/auth"
+	"CA_Go/database"
 	"CA_Go/model"
 )
 
-func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
+func CreateUser(w http.ResponseWriter, r *http.Request) {
 	// handlerを分ける(ヘッダーセットやbody読み取る部分、レスポンス部分)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 
 	if r.Method != "POST" {
-		fprint, err := fmt.Fprint(w, "Not post...")
+		_, err := fmt.Fprint(w, "Not post...")
 		if err != nil {
 			return
 		}
@@ -46,8 +46,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
-	db.NewRecord(user)
-	db.Create(&user)
+	database.DB.NewRecord(user)
+	database.DB.Create(&user)
 
 	response := model.CreateUserResponse{}
 	response.Token = token
@@ -57,18 +57,18 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	fprint, err := fmt.Fprint(w, string(outputJson))
+	_, err = fmt.Fprint(w, string(outputJson))
 	if err != nil {
 		return
 	}
 }
 
-func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
+func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 
 	if r.Method != "GET" {
-		fprint, err := fmt.Fprint(w, "Not get...")
+		_, err := fmt.Fprint(w, "Not get...")
 		if err != nil {
 			return
 		}
@@ -78,7 +78,7 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	xToken := r.Header.Get("x-token")
 	user := model.NewUser()
 
-	db.Where("token = ?", xToken).First(&user)
+	database.DB.Where("token = ?", xToken).First(&user)
 
 	response := model.GetUserResponse{}
 	response.Name = user.Name
@@ -88,19 +88,20 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	fprintf, err := fmt.Fprintf(w, string(outputJson))
+	_, err = fmt.Fprintf(w, string(outputJson))
 	if err != nil {
 		return
 	}
+	return
 }
 
-func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
 
 	if r.Method != "PUT" {
-		fprint, err := fmt.Fprint(w, "Not put...")
+		_, err := fmt.Fprint(w, "Not put...")
 		if err != nil {
 			return
 		}
@@ -123,14 +124,14 @@ func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	xToken := r.Header.Get("x-token")
 	user := model.NewUser()
 
-	db.Where("token = ?", xToken).First(&user).Update("name", data.Name)
+	database.DB.Where("token = ?", xToken).First(&user).Update("name", data.Name)
 	if user.ID == 0 {
 		fmt.Println("don't find user id:", user.ID)
 		return
 	}
 	fmt.Println("updated user id:", user.ID)
 
-	fprint, err := fmt.Fprint(w, "A successful response.")
+	_, err = fmt.Fprint(w, "A successful response.")
 	if err != nil {
 		return
 	}

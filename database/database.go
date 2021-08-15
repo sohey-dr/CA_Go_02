@@ -10,7 +10,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func DbConnect() *gorm.DB {
+var DB *gorm.DB
+
+func DbConnect() {
 	err := godotenv.Load()
 	if err != nil {
 		panic(err.Error())
@@ -23,12 +25,13 @@ func DbConnect() *gorm.DB {
 	CONNECT := dbUser + ":" + dbPass + "@" + protcol + "/" + dbName
 
 	db, err := gorm.Open("mysql", CONNECT)
+	DB = db
 
 	if err != nil {
 		panic(err.Error())
 	}
 
-	fmt.Println("db connected: ", &db)
-	db.AutoMigrate(&model.User{})
-	return db
+	fmt.Println("db connected: ", &DB)
+	DB.AutoMigrate(&model.User{})
+
 }

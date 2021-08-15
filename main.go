@@ -11,19 +11,20 @@ import (
 func main() {
 	// ここ要らない
 	// routerを作る
-	db := database.DbConnect()
+	database.DbConnect()
+	defer database.DB.Close()
 
 	// NOTE:HandleFuncを1行で書いて、第2引数のメソッドに第3引数を渡したい
 	http.HandleFunc("/user/create", func(w http.ResponseWriter, r *http.Request) {
-		controller.CreateUser(w, r, db)
+		controller.CreateUser(w, r)
 	})
 	http.HandleFunc("/user/get", func(w http.ResponseWriter, r *http.Request) {
-		controller.GetUser(w, r, db)
+		controller.GetUser(w, r)
 	})
 	http.HandleFunc("/user/update", func(w http.ResponseWriter, r *http.Request) {
-		controller.UpdateUser(w, r, db)
+		controller.UpdateUser(w, r)
 	})
-	defer db.Close()
+
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		return
