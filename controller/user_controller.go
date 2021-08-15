@@ -3,13 +3,13 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/jinzhu/gorm"
 	"io/ioutil"
 	"net/http"
 	"time"
-	"github.com/jinzhu/gorm"
 
-	"CA_Go/model"
 	"CA_Go/auth"
+	"CA_Go/model"
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
@@ -34,7 +34,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 		fmt.Println("JSON Unmarshal error:", err)
 		return
 	}
-	
+
 	token := auth.GenerateToken()
 
 	user := model.NewUser()
@@ -85,7 +85,7 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set( "Access-Control-Allow-Methods","PUT" )
+	w.Header().Set("Access-Control-Allow-Methods", "PUT")
 
 	if r.Method != "PUT" {
 		fmt.Fprint(w, "Not put...")
