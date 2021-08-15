@@ -94,7 +94,10 @@ func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
 
 	if r.Method != "PUT" {
-		fmt.Fprint(w, "Not put...")
+		fprint, err := fmt.Fprint(w, "Not put...")
+		if err != nil {
+			return
+		}
 		return
 	}
 
