@@ -57,7 +57,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprint(w, string(outputJson))
+	fprint, err := fmt.Fprint(w, string(outputJson))
+	if err != nil {
+		return
+	}
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
@@ -85,7 +88,10 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprint(w, string(outputJson))
+	fprintf, err := fmt.Fprintf(w, string(outputJson))
+	if err != nil {
+		return
+	}
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
