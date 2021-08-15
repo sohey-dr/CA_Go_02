@@ -3,12 +3,12 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/jinzhu/gorm"
 	"io/ioutil"
 	"net/http"
 	"time"
 
 	"CA_Go/auth"
+	"CA_Go/database"
 	"CA_Go/model"
 )
 
