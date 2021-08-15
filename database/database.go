@@ -24,13 +24,13 @@ func DbConnect() {
 	dbName := os.Getenv("DB_NAME") + "?charset=utf8&parseTime=true&loc=Local"
 	CONNECT := dbUser + ":" + dbPass + "@" + protcol + "/" + dbName
 
-	db, err := gorm.Open("mysql", CONNECT)
+	DB, err := gorm.Open("mysql", CONNECT)
 
 	if err != nil {
 		panic(err.Error())
 	}
 
-	fmt.Println("db connected: ", &db)
-	db.AutoMigrate(&model.User{})
-	return db
+	fmt.Println("db connected: ", &DB)
+	DB.AutoMigrate(&model.User{})
+
 }

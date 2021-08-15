@@ -46,8 +46,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
-	db.NewRecord(user)
-	db.Create(&user)
+	database.DB.NewRecord(user)
+	database.DB.Create(&user)
 
 	response := model.CreateUserResponse{}
 	response.Token = token
@@ -78,7 +78,7 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	xToken := r.Header.Get("x-token")
 	user := model.NewUser()
 
-	db.Where("token = ?", xToken).First(&user)
+	database.DB.Where("token = ?", xToken).First(&user)
 
 	response := model.GetUserResponse{}
 	response.Name = user.Name
@@ -124,7 +124,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	xToken := r.Header.Get("x-token")
 	user := model.NewUser()
 
-	db.Where("token = ?", xToken).First(&user).Update("name", data.Name)
+	database.DB.Where("token = ?", xToken).First(&user).Update("name", data.Name)
 	if user.ID == 0 {
 		fmt.Println("don't find user id:", user.ID)
 		return
