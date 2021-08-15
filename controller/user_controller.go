@@ -18,7 +18,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 
 	if r.Method != "POST" {
-		fmt.Fprint(w, "Not post...")
+		fprint, err := fmt.Fprint(w, "Not post...")
+		if err != nil {
+			return
+		}
 		return
 	}
 
@@ -54,7 +57,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprint(w, string(outputJson))
+	fprint, err := fmt.Fprint(w, string(outputJson))
+	if err != nil {
+		return
+	}
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
@@ -62,7 +68,10 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 
 	if r.Method != "GET" {
-		fmt.Fprint(w, "Not get...")
+		fprint, err := fmt.Fprint(w, "Not get...")
+		if err != nil {
+			return
+		}
 		return
 	}
 
@@ -79,7 +88,10 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprint(w, string(outputJson))
+	fprintf, err := fmt.Fprintf(w, string(outputJson))
+	if err != nil {
+		return
+	}
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
@@ -88,7 +100,10 @@ func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	w.Header().Set("Access-Control-Allow-Methods", "PUT")
 
 	if r.Method != "PUT" {
-		fmt.Fprint(w, "Not put...")
+		fprint, err := fmt.Fprint(w, "Not put...")
+		if err != nil {
+			return
+		}
 		return
 	}
 
@@ -115,5 +130,8 @@ func UpdateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	}
 	fmt.Println("updated user id:", user.ID)
 
-	fmt.Fprint(w, "A successful response.")
+	fprint, err := fmt.Fprint(w, "A successful response.")
+	if err != nil {
+		return
+	}
 }
