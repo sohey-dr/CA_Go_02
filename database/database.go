@@ -10,7 +10,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func DbConnect() *gorm.DB {
+var DB *gorm.DB
+
+func DbConnect() {
 	err := godotenv.Load()
 	if err != nil {
 		panic(err.Error())
