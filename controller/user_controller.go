@@ -65,7 +65,10 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 
 	if r.Method != "GET" {
-		fmt.Fprint(w, "Not get...")
+		fprint, err := fmt.Fprint(w, "Not get...")
+		if err != nil {
+			return
+		}
 		return
 	}
 
