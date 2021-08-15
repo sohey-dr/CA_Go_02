@@ -24,7 +24,8 @@ func DbConnect() {
 	dbName := os.Getenv("DB_NAME") + "?charset=utf8&parseTime=true&loc=Local"
 	CONNECT := dbUser + ":" + dbPass + "@" + protcol + "/" + dbName
 
-	DB, err := gorm.Open("mysql", CONNECT)
+	db, err := gorm.Open("mysql", CONNECT)
+	DB = db
 
 	if err != nil {
 		panic(err.Error())
