@@ -1,11 +1,11 @@
 package database
 
 import (
-	"os"
+	"CA_Go/model"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
-	"CA_Go/model"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
