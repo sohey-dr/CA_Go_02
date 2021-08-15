@@ -18,7 +18,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 
 	if r.Method != "POST" {
-		fmt.Fprint(w, "Not post...")
+		fprint, err := fmt.Fprint(w, "Not post...")
+		if err != nil {
+			return
+		}
 		return
 	}
 
