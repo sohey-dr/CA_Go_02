@@ -6,8 +6,6 @@ import (
 )
 
 func main() {
-	// ここ要らない
-	// routerを作る
 	database.DbConnect()
 	defer database.DB.Close()
 	router.NewRouter()
