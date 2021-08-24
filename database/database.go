@@ -1,7 +1,6 @@
 package database
 
 import (
-	"CA_Go/model"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
@@ -32,6 +31,5 @@ func DbConnect() {
 	}
 
 	fmt.Println("db connected: ", &DB)
-	DB.AutoMigrate(&model.User{})
-
+	//TODO:どこかでマイグレーションする
 }
