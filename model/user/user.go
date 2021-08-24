@@ -17,7 +17,3 @@ type CreateUserResponse struct {
 type GetUserResponse struct {
 	Name string `json:"name"`
 }
-
-func NewUser() User {
-	return User{}
-}
