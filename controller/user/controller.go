@@ -1,15 +1,13 @@
-package controller
+package user
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"time"
 
-	"CA_Go/auth"
 	"CA_Go/database"
-	"CA_Go/model"
+	"CA_Go/model/user"
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
@@ -32,24 +30,15 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jsonBytes := ([]byte)(body)
-	data := new(model.User)
-	if err := json.Unmarshal(jsonBytes, data); err != nil {
+	params := new(user.User)
+	if err := json.Unmarshal(jsonBytes, params); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)
 		return
 	}
 
-	token := auth.GenerateToken()
+	token := user.Create(params.Name)
 
-	user := model.NewUser()
-	user.Name = data.Name
-	user.Token = token
-	user.CreatedAt = time.Now()
-	user.UpdatedAt = time.Now()
-
-	database.DB.NewRecord(user)
-	database.DB.Create(&user)
-
-	response := model.CreateUserResponse{}
+	response := user.CreateUserResponse{}
 	response.Token = token
 	outputJson, err := json.Marshal(&response)
 	if err != nil {
@@ -76,11 +65,11 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	xToken := r.Header.Get("x-token")
-	user := model.NewUser()
+	user := user.NewUser()
 
 	database.DB.Where("token = ?", xToken).First(&user)
 
-	response := model.GetUserResponse{}
+	response := user.GetUserResponse{}
 	response.Name = user.Name
 	outputJson, err := json.Marshal(&response)
 	if err != nil {
@@ -115,14 +104,14 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jsonBytes := ([]byte)(body)
-	data := new(model.User)
+	data := new(user.User)
 	if err := json.Unmarshal(jsonBytes, data); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)
 		return
 	}
 
 	xToken := r.Header.Get("x-token")
-	user := model.NewUser()
+	user := user.NewUser()
 
 	database.DB.Where("token = ?", xToken).First(&user).Update("name", data.Name)
 	if user.ID == 0 {
