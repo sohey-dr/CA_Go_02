@@ -11,18 +11,6 @@ import (
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	// handlerを分ける(ヘッダーセットやbody読み取る部分、レスポンス部分)
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-
-	if r.Method != "POST" {
-		_, err := fmt.Fprint(w, "Not post...")
-		if err != nil {
-			return
-		}
-		return
-	}
-
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Println("io error")
