@@ -1,4 +1,4 @@
-package model
+package user
 
 import (
 	"github.com/jinzhu/gorm"
@@ -16,8 +16,4 @@ type CreateUserResponse struct {
 
 type GetUserResponse struct {
 	Name string `json:"name"`
-}
-
-func NewUser() User {
-	return User{}
 }

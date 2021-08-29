@@ -1,30 +1,16 @@
-package controller
+package user
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"time"
 
-	"CA_Go/auth"
 	"CA_Go/database"
-	"CA_Go/model"
+	"CA_Go/model/user"
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	// handlerを分ける(ヘッダーセットやbody読み取る部分、レスポンス部分)
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-
-	if r.Method != "POST" {
-		_, err := fmt.Fprint(w, "Not post...")
-		if err != nil {
-			return
-		}
-		return
-	}
-
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Println("io error")
@@ -32,25 +18,17 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jsonBytes := ([]byte)(body)
-	data := new(model.User)
-	if err := json.Unmarshal(jsonBytes, data); err != nil {
+	params := new(user.User)
+	if err := json.Unmarshal(jsonBytes, params); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)
 		return
 	}
 
-	token := auth.GenerateToken()
+	u := user.NewUser()
+	u.Create(params.Name)
 
-	user := model.NewUser()
-	user.Name = data.Name
-	user.Token = token
-	user.CreatedAt = time.Now()
-	user.UpdatedAt = time.Now()
-
-	database.DB.NewRecord(user)
-	database.DB.Create(&user)
-
-	response := model.CreateUserResponse{}
-	response.Token = token
+	response := user.CreateUserResponse{}
+	response.Token = u.Token
 	outputJson, err := json.Marshal(&response)
 	if err != nil {
 		panic(err)
@@ -76,12 +54,12 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	xToken := r.Header.Get("x-token")
-	user := model.NewUser()
+	u := user.NewUser()
 
-	database.DB.Where("token = ?", xToken).First(&user)
+	database.DB.Where("token = ?", xToken).First(&u)
 
-	response := model.GetUserResponse{}
-	response.Name = user.Name
+	response := user.GetUserResponse{}
+	response.Name = u.Name
 	outputJson, err := json.Marshal(&response)
 	if err != nil {
 		panic(err)
@@ -115,14 +93,14 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jsonBytes := ([]byte)(body)
-	data := new(model.User)
+	data := new(user.User)
 	if err := json.Unmarshal(jsonBytes, data); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)
 		return
 	}
 
 	xToken := r.Header.Get("x-token")
-	user := model.NewUser()
+	user := user.NewUser()
 
 	database.DB.Where("token = ?", xToken).First(&user).Update("name", data.Name)
 	if user.ID == 0 {
