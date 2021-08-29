@@ -65,12 +65,12 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	xToken := r.Header.Get("x-token")
-	user := user.NewUser()
+	u := user.NewUser()
 
-	database.DB.Where("token = ?", xToken).First(&user)
+	database.DB.Where("token = ?", xToken).First(&u)
 
 	response := user.GetUserResponse{}
-	response.Name = user.Name
+	response.Name = u.Name
 	outputJson, err := json.Marshal(&response)
 	if err != nil {
 		panic(err)
