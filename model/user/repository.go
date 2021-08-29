@@ -28,8 +28,8 @@ func (u *User) FindByToken(xToken string) {
 	database.DB.Where("token = ?", xToken).First(&u)
 }
 
-func Update() {
-
+func (u *User) UpdateNameByToken(xToken string, name string) {
+	database.DB.Where("token = ?", xToken).First(&u).Update("name", name)
 }
 
 func generateToken() string {
