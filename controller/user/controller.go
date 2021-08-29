@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"CA_Go/database"
 	"CA_Go/model/user"
 )
 
