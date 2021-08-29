@@ -35,7 +35,10 @@ func (u *User) UpdateNameByToken(xToken string, name string) {
 func generateToken() string {
 	codeAlphabet := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 
-	b := make([]rune, 20)
+	rand.Seed(time.Now().Unix())
+	n := rand.Intn(30)
+
+	b := make([]rune, n)
 	for i := range b {
 		b[i] = codeAlphabet[rand.Intn(len(codeAlphabet))]
 	}
