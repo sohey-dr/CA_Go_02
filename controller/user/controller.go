@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"CA_Go/database"
 	"CA_Go/model/user"
 )
 
@@ -61,18 +60,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "PUT")
-
-	if r.Method != "PUT" {
-		_, err := fmt.Fprint(w, "Not put...")
-		if err != nil {
-			return
-		}
-		return
-	}
-
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Println("io error")
@@ -85,16 +72,15 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("JSON Unmarshal error:", err)
 		return
 	}
-
 	xToken := r.Header.Get("x-token")
-	user := user.NewUser()
 
-	database.DB.Where("token = ?", xToken).First(&user).Update("name", data.Name)
-	if user.ID == 0 {
-		fmt.Println("don't find user id:", user.ID)
+	u := user.NewUser()
+	u.UpdateNameByToken(xToken, data.Name)
+	if u.ID == 0 {
+		fmt.Println("don't find user id:", u.ID)
 		return
 	}
-	fmt.Println("updated user id:", user.ID)
+	fmt.Println("updated user id:", u.ID)
 
 	_, err = fmt.Fprint(w, "A successful response.")
 	if err != nil {
