@@ -36,7 +36,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token := user.Create(params.Name)
+	u := user.NewUser()
+	token := u.Create(params.Name)
 
 	response := user.CreateUserResponse{}
 	response.Token = token
