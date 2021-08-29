@@ -2,6 +2,8 @@ package user
 
 import (
 	"CA_Go/database"
+	"math/rand"
+	"time"
 )
 
 func NewUser() *User {
