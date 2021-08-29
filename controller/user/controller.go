@@ -27,8 +27,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	u := user.NewUser()
 	u.Create(params.Name)
 
-	response := user.CreateUserResponse{}
-	response.Token = u.Token
+	response := user.CreateUserResponse{Token: u.Token}
 	outputJson, err := json.Marshal(&response)
 	if err != nil {
 		panic(err)
@@ -42,24 +41,12 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-
-	if r.Method != "GET" {
-		_, err := fmt.Fprint(w, "Not get...")
-		if err != nil {
-			return
-		}
-		return
-	}
-
 	xToken := r.Header.Get("x-token")
+
 	u := user.NewUser()
+	u.FindByToken(xToken)
 
-	database.DB.Where("token = ?", xToken).First(&u)
-
-	response := user.GetUserResponse{}
-	response.Name = u.Name
+	response := user.GetUserResponse{Name: u.Name}
 	outputJson, err := json.Marshal(&response)
 	if err != nil {
 		panic(err)

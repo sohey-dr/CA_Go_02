@@ -2,6 +2,8 @@ package user
 
 import (
 	"CA_Go/database"
+	"math/rand"
+	"time"
 )
 
 func NewUser() *User {
@@ -22,8 +24,8 @@ func (u *User) Create(name string) {
 	return
 }
 
-func Find() {
-
+func (u *User) FindByToken(xToken string) {
+	database.DB.Where("token = ?", xToken).First(&u)
 }
 
 func Update() {

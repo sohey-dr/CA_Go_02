@@ -17,6 +17,7 @@ func NewRouter() error {
 	userSubRouter.HandleFunc("/get", user.GetUser).Methods("GET")
 	userSubRouter.HandleFunc("/update", user.UpdateUser).Methods("PUT")
 
-	c := cors.Default().Handler(r)
+	//TODO:アクセス元を絞る
+	c := cors.AllowAll().Handler(r)
 	return http.ListenAndServe(fmt.Sprintf(":%d", 8080), c)
 }
