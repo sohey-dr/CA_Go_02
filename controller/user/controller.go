@@ -61,18 +61,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "PUT")
-
-	if r.Method != "PUT" {
-		_, err := fmt.Fprint(w, "Not put...")
-		if err != nil {
-			return
-		}
-		return
-	}
-
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Println("io error")
