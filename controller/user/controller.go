@@ -72,16 +72,15 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("JSON Unmarshal error:", err)
 		return
 	}
-
 	xToken := r.Header.Get("x-token")
-	user := user.NewUser()
 
-	database.DB.Where("token = ?", xToken).First(&user).Update("name", data.Name)
-	if user.ID == 0 {
-		fmt.Println("don't find user id:", user.ID)
+	u := user.NewUser()
+	u.UpdateNameByToken(xToken, data.Name)
+	if u.ID == 0 {
+		fmt.Println("don't find user id:", u.ID)
 		return
 	}
-	fmt.Println("updated user id:", user.ID)
+	fmt.Println("updated user id:", u.ID)
 
 	_, err = fmt.Fprint(w, "A successful response.")
 	if err != nil {
