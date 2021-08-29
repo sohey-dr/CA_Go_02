@@ -8,9 +8,18 @@ func NewUser() *User {
 	return &User{}
 }
 
-func Create(params) {
-	user := newUser()
+func (u *User) Create(name string) {
+	token := generateToken()
 
+	u.Name = name
+	u.Token = token
+	u.CreatedAt = time.Now()
+	u.UpdatedAt = time.Now()
+
+	database.DB.NewRecord(u)
+	database.DB.Create(&u)
+
+	return
 }
 
 func Find() {
