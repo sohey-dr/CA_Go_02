@@ -4,8 +4,8 @@ import (
 	"CA_Go/database"
 )
 
-func newUser() User {
-	return User{}
+func NewUser() *User {
+	return &User{}
 }
 
 func Create(params) {
