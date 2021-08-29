@@ -27,8 +27,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	u := user.NewUser()
 	u.Create(params.Name)
 
-	response := user.CreateUserResponse{}
-	response.Token = u.Token
+	response := user.CreateUserResponse{Token: u.Token}
 	outputJson, err := json.Marshal(&response)
 	if err != nil {
 		panic(err)
