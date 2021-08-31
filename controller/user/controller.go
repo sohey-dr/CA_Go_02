@@ -13,7 +13,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	params := &user.User{}
 	err := json.NewDecoder(r.Body).Decode(params)
 	if err != nil {
-		fmt.Println("JSON Unmarshal error:", err)
+		fmt.Println("JSON Decode error:", err)
 		return
 	}
 
@@ -57,7 +57,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	params := &user.User{}
 	err := json.NewDecoder(r.Body).Decode(params)
 	if err != nil {
-		fmt.Println("JSON Unmarshal error:", err)
+		fmt.Println("JSON Decode error:", err)
 		return
 	}
 	xToken := r.Header.Get("x-token")
