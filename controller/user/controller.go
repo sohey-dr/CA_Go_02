@@ -20,14 +20,17 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	u := user.NewUser()
 	u.Create(params.Name)
 
-	response := user.CreateUserResponse{Token: u.Token}
-	outputJson, err := json.Marshal(&response)
+	w.Header().Set("Content-Type", "application/json")
+
+	var b bytes.Buffer
+	response := &user.CreateUserResponse{Token: u.Token}
+	err = json.NewEncoder(&b).Encode(response)
 	if err != nil {
-		panic(err)
+		fmt.Println("JSON Encode error:", err)
+		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_, err = fmt.Fprint(w, string(outputJson))
+	_, err = fmt.Fprint(w, b.String())
 	if err != nil {
 		return
 	}
@@ -39,13 +42,15 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	u := user.NewUser()
 	u.FindByToken(xToken)
 
+	w.Header().Set("Content-Type", "application/json")
+	var b bytes.Buffer
 	response := user.GetUserResponse{Name: u.Name}
-	outputJson, err := json.Marshal(&response)
+	err = json.NewEncoder(&b).Encode(response)
 	if err != nil {
-		panic(err)
+		fmt.Println("JSON Encode error:", err)
+		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
 	_, err = fmt.Fprintf(w, string(outputJson))
 	if err != nil {
 		return
