@@ -7,7 +7,7 @@ import (
 type User struct {
 	gorm.Model
 	Name  string `json:"name"`
-	Token string
+	Token string `json:"-"`
 }
 
 type CreateUserResponse struct {
