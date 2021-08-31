@@ -64,13 +64,6 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	params := &user.User{}
 	err := json.NewDecoder(r.Body).Decode(params)
 	if err != nil {
-		fmt.Println("io error")
-		return
-	}
-
-	jsonBytes := ([]byte)(body)
-	data := new(user.User)
-	if err := json.Unmarshal(jsonBytes, data); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)
 		return
 	}
