@@ -13,13 +13,6 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	params := &user.User{}
 	err := json.NewDecoder(r.Body).Decode(params)
 	if err != nil {
-		fmt.Println("io error")
-		return
-	}
-
-	jsonBytes := ([]byte)(body)
-	params := new(user.User)
-	if err := json.Unmarshal(jsonBytes, params); err != nil {
 		fmt.Println("JSON Unmarshal error:", err)
 		return
 	}
