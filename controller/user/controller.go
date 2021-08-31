@@ -10,7 +10,8 @@ import (
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	body, err := ioutil.ReadAll(r.Body)
+	params := &user.User{}
+	err := json.NewDecoder(r.Body).Decode(params)
 	if err != nil {
 		fmt.Println("io error")
 		return
@@ -60,7 +61,8 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	body, err := ioutil.ReadAll(r.Body)
+	params := &user.User{}
+	err := json.NewDecoder(r.Body).Decode(params)
 	if err != nil {
 		fmt.Println("io error")
 		return
@@ -75,7 +77,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	xToken := r.Header.Get("x-token")
 
 	u := user.NewUser()
-	u.UpdateNameByToken(xToken, data.Name)
+	u.UpdateNameByToken(xToken, params.Name)
 	if u.ID == 0 {
 		fmt.Println("don't find user id:", u.ID)
 		return
