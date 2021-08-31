@@ -1,9 +1,9 @@
 package user
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	"CA_Go/model/user"
@@ -21,7 +21,6 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	u.Create(params.Name)
 
 	w.Header().Set("Content-Type", "application/json")
-
 	var b bytes.Buffer
 	response := &user.CreateUserResponse{Token: u.Token}
 	err = json.NewEncoder(&b).Encode(response)
@@ -45,17 +44,16 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var b bytes.Buffer
 	response := user.GetUserResponse{Name: u.Name}
-	err = json.NewEncoder(&b).Encode(response)
+	err := json.NewEncoder(&b).Encode(response)
 	if err != nil {
 		fmt.Println("JSON Encode error:", err)
 		return
 	}
 
-	_, err = fmt.Fprintf(w, string(outputJson))
+	_, err = fmt.Fprintf(w, b.String())
 	if err != nil {
 		return
 	}
-	return
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
