@@ -1,12 +1,9 @@
 package main
 
 import (
-	"CA_Go/database"
-	"CA_Go/router"
+	"CA_Go/server"
 )
 
 func main() {
-	database.DbConnect()
-	defer database.DB.Close()
-	router.NewRouter()
+	server.Run()
 }
