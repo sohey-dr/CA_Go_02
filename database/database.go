@@ -2,11 +2,10 @@ package database
 
 import (
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
 	"os"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 var DB *gorm.DB
