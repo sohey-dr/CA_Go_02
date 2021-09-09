@@ -8,6 +8,6 @@ func NewCharacter() *Character {
 	return &Character{}
 }
 
-func (c *Character) FindByRarity(rarity string) {
-	database.DB.Where("rarity = ?", rarity).First(&c)
+func (c *Character) FindByRarityOrderByRand(rarity Rarity) {
+	database.DB.Where("rarity = ?", rarity).Order("RAND()").First(&c)
 }
