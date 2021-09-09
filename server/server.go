@@ -6,7 +6,7 @@ import (
 )
 
 func Run() {
-	database.DbConnect()
+	database.DBConnect()
 	defer database.DB.Close()
 	router.NewRouter()
 }
