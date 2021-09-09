@@ -37,6 +37,7 @@ func Draws(n int, xToken string) []GachaResult {
 		result := GachaResult{CharacterID: strconv.FormatInt(character.ID, 10), Name: character.Name}
 
 		//TODO:リファクタリングで別のパッケージに移行する
+		//TODO:同じキャラクターを複数体持てるようにする
 		database.DB.Model(u).Association("Characters").Append(character)
 
 		results = append(results, result)
