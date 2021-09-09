@@ -1,7 +1,7 @@
 package character
 
 import (
-	"github.com/jinzhu/gorm"
+	"time"
 )
 
 type Rarity string
@@ -14,8 +14,9 @@ const (
 )
 
 type Character struct {
-	gorm.Model
-	ID     int
-	Name   string
-	Rarity Rarity
+	ID        int64
+	Name      string
+	Rarity    Rarity
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
