@@ -15,6 +15,7 @@ const (
 
 type Character struct {
 	gorm.Model
+	ID     int
 	Name   string
 	Rarity Rarity
 }
