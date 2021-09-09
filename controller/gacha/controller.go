@@ -21,11 +21,7 @@ func DrawCharacter(w http.ResponseWriter, r *http.Request) {
 	//db.Create(&user)
 	characters := gacha.Draws(2)
 
-	var results []gacha.GachaResult
-	for _, character := range characters {
-		result := gacha.GachaResult{CharacterID: strconv.FormatInt(character.ID, 10), Name: character.Name}
-		results = append(results, result)
-	}
+	results := gacha.Draws(params.Times)
 
 	response := gacha.GachaDrawResponse{Results: results}
 	j, _ := json.Marshal(response)

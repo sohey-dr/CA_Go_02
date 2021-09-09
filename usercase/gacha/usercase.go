@@ -15,10 +15,16 @@ type GachaDrawResponse struct {
 	Results []GachaResult `json:"results"`
 }
 
-func Draws(n int) []*character.Character {
-	results := make([]*character.Character, n)
+func Draws(n int) []GachaResult {
+	characters := make([]*character.Character, n)
 	for i := 0; i < n; i++ {
-		results[i] = draw()
+		characters[i] = draw()
+	}
+
+	var results []GachaResult
+	for _, character := range characters {
+		result := GachaResult{CharacterID: strconv.FormatInt(character.ID, 10), Name: character.Name}
+		results = append(results, result)
 	}
 
 	return results
