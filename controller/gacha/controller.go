@@ -20,15 +20,7 @@ func DrawCharacter(w http.ResponseWriter, r *http.Request) {
 
 	xToken := r.Header.Get("x-token")
 
-	u := user.NewUser()
-	u.FindByToken(xToken)
-
-	//characters := []character.Character{{}, {}}
-	//db.Create(&characters)
-	//user := user.User{Character: characters}
-	//db.Create(&user)
-
-	results := gacha.Draws(params.Times)
+	results := gacha.Draws(params.Times, xToken)
 
 	response := gacha.GachaDrawResponse{Results: results}
 	j, _ := json.Marshal(response)
