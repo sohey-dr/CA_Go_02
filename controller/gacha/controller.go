@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"CA_Go/model/user"
 	"CA_Go/usercase/gacha"
 )
 

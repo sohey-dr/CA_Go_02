@@ -4,7 +4,9 @@ import (
 	"math/rand"
 	"strconv"
 
+	"CA_Go/database"
 	"CA_Go/model/character"
+	"CA_Go/model/user"
 )
 
 type GachaDrawRequest struct {
