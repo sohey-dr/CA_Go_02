@@ -2,9 +2,14 @@ package gacha
 
 import (
 	"math/rand"
+	"strconv"
 
 	"CA_Go/model/character"
 )
+
+type GachaDrawRequest struct {
+	Times int `json:"times"`
+}
 
 type GachaResult struct {
 	CharacterID string `json:"characterID"`

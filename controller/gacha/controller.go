@@ -2,6 +2,7 @@ package gacha
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -10,6 +11,13 @@ import (
 )
 
 func DrawCharacter(w http.ResponseWriter, r *http.Request) {
+	params := &gacha.GachaDrawRequest{}
+	err := json.NewDecoder(r.Body).Decode(params)
+	if err != nil {
+		fmt.Println("JSON Decode error:", err)
+		return
+	}
+
 	xToken := r.Header.Get("x-token")
 
 	u := user.NewUser()
@@ -19,7 +27,6 @@ func DrawCharacter(w http.ResponseWriter, r *http.Request) {
 	//db.Create(&characters)
 	//user := user.User{Character: characters}
 	//db.Create(&user)
-	characters := gacha.Draws(2)
 
 	results := gacha.Draws(params.Times)
 
