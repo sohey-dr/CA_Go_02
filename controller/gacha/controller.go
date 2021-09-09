@@ -25,16 +25,7 @@ func DrawCharacter(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(results[0])
 
 	w.Header().Set("Content-Type", "application/json")
-	var b bytes.Buffer
-	response := user.GetUserResponse{Name: u.Name}
-	err := json.NewEncoder(&b).Encode(response)
-	if err != nil {
-		fmt.Println("JSON Encode error:", err)
-		return
-	}
-
-	_, err = fmt.Fprintf(w, b.String())
-	if err != nil {
-		return
-	}
+	w.Header().Set("Content-Length", strconv.Itoa(len(j)))
+	w.WriteHeader(http.StatusOK)
+	w.Write(j)
 }
