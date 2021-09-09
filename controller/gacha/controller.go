@@ -23,7 +23,7 @@ func DrawCharacter(w http.ResponseWriter, r *http.Request) {
 
 	var results []gacha.GachaResult
 	for _, character := range characters {
-		result := gacha.GachaResult{CharacterID: strconv.Itoa(character.ID), Name: character.Name}
+		result := gacha.GachaResult{CharacterID: strconv.FormatInt(character.ID, 10), Name: character.Name}
 		results = append(results, result)
 	}
 

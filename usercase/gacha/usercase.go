@@ -7,7 +7,7 @@ import (
 )
 
 type GachaResult struct {
-	CharacterID int    `json:"characterID"`
+	CharacterID string `json:"characterID"`
 	Name        string `json:"name"`
 }
 
@@ -25,16 +25,23 @@ func Draws(n int) []*character.Character {
 }
 
 func draw() *character.Character {
+	c := character.NewCharacter()
+
+	// NOTE:ランダム性を出すために100までの数字を出す
 	num := rand.Intn(100)
 
 	switch {
 	case num < 80:
-		return &character.Character{Rarity: character.RarityN, Name: "スライム"}
+		c.FindByRarityOrderByRand(character.RarityN)
+		return c
 	case num < 95:
-		return &character.Character{Rarity: character.RarityR, Name: "オーク"}
+		c.FindByRarityOrderByRand(character.RarityR)
+		return c
 	case num < 99:
-		return &character.Character{Rarity: character.RaritySR, Name: "ドラゴン"}
+		c.FindByRarityOrderByRand(character.RaritySR)
+		return c
 	default:
-		return &character.Character{Rarity: character.RarityUR, Name: "イフリート"}
+		c.FindByRarityOrderByRand(character.RarityUR)
+		return c
 	}
 }
