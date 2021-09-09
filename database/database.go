@@ -10,7 +10,7 @@ import (
 
 var DB *gorm.DB
 
-func DbConnect() {
+func DBConnect() {
 	err := godotenv.Load()
 	if err != nil {
 		panic(err.Error())
