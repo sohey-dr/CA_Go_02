@@ -6,6 +6,7 @@ import (
 	"github.com/rs/cors"
 	"net/http"
 
+	"CA_Go/controller/character"
 	"CA_Go/controller/gacha"
 	"CA_Go/controller/user"
 )
@@ -19,6 +20,7 @@ func NewRouter() error {
 	userSubRouter.HandleFunc("/update", user.UpdateUser).Methods("PUT")
 
 	r.HandleFunc("/gacha/draw", gacha.DrawCharacter).Methods("POST")
+	r.HandleFunc("/character/list", character.GetUserCharacters).Methods("GET")
 
 	//TODO:アクセス元を絞る
 	c := cors.AllowAll().Handler(r)

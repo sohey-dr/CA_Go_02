@@ -1,15 +1,17 @@
 package user
 
 import (
-	"github.com/jinzhu/gorm"
 	"CA_Go/model/character"
+	"time"
 )
 
 type User struct {
-	gorm.Model
-	Name        string `json:"name"`
-	Token       string `json:"-"`
-	Characters  []character.Character `gorm:"many2many:user_characters"`
+	ID         int64
+	Name       string                `json:"name"`
+	Token      string                `json:"-"`
+	Characters []character.Character `gorm:"many2many:user_characters"`
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
 
 type CreateUserResponse struct {
