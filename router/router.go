@@ -22,7 +22,6 @@ func NewRouter() error {
 	r.HandleFunc("/gacha/draw", gacha.DrawCharacter).Methods("POST")
 	r.HandleFunc("/character/list", character.GetUserCharacters).Methods("GET")
 
-	//TODO:アクセス元を絞る
 	c := cors.AllowAll().Handler(r)
 	return http.ListenAndServe(fmt.Sprintf(":%d", 8080), c)
 }

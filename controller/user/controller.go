@@ -1,10 +1,10 @@
 package user
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"CA_Go/model/user"
 )
@@ -20,19 +20,13 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	u := user.NewUser()
 	u.Create(params.Name)
 
-	w.Header().Set("Content-Type", "application/json")
-	var b bytes.Buffer
 	response := &user.CreateUserResponse{Token: u.Token}
-	err = json.NewEncoder(&b).Encode(response)
-	if err != nil {
-		fmt.Println("JSON Encode error:", err)
-		return
-	}
+	j, _ := json.Marshal(response)
 
-	_, err = fmt.Fprint(w, b.String())
-	if err != nil {
-		return
-	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Length", strconv.Itoa(len(j)))
+	w.WriteHeader(http.StatusOK)
+	w.Write(j)
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
@@ -41,19 +35,13 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	u := user.NewUser()
 	u.FindByToken(xToken)
 
-	w.Header().Set("Content-Type", "application/json")
-	var b bytes.Buffer
 	response := user.GetUserResponse{Name: u.Name}
-	err := json.NewEncoder(&b).Encode(response)
-	if err != nil {
-		fmt.Println("JSON Encode error:", err)
-		return
-	}
+	j, _ := json.Marshal(response)
 
-	_, err = fmt.Fprintf(w, b.String())
-	if err != nil {
-		return
-	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Length", strconv.Itoa(len(j)))
+	w.WriteHeader(http.StatusOK)
+	w.Write(j)
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
