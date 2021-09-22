@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"CA_Go/model/character"
 	"CA_Go/model/user"
 	"CA_Go/model/user_character"
+	"CA_Go/usercase/character"
 )
 
 func GetUserCharacters(w http.ResponseWriter, r *http.Request) {
@@ -16,15 +16,7 @@ func GetUserCharacters(w http.ResponseWriter, r *http.Request) {
 	u := user.NewUser()
 	u.FindByToken(xToken)
 
-	var characters []user_character.UserCharacter
-	userCharacters := user_character.GetByUserID(strconv.FormatInt(u.ID, 10))
-	for _, uc := range userCharacters {
-		c := character.NewCharacter()
-		c.FindById(uc.CharacterID)
-		uc.Name = c.Name
-
-		characters = append(characters, uc)
-	}
+	characters := character.GetUserCharacters(u)
 
 	response := &user_character.CharacterListResponse{Characters: characters}
 	j, _ := json.Marshal(response)
