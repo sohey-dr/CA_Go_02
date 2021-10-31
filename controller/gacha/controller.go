@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"CA_Go/usercase/gacha"
+	"CA_Go/usecase/gacha"
 )
 
 func DrawCharacter(w http.ResponseWriter, r *http.Request) {

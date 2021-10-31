@@ -7,7 +7,7 @@ import (
 
 	"CA_Go/model/user"
 	"CA_Go/model/user_character"
-	"CA_Go/usercase/character"
+	"CA_Go/usecase/character"
 )
 
 func GetUserCharacters(w http.ResponseWriter, r *http.Request) {
