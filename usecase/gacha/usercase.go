@@ -52,6 +52,7 @@ func draw() *character.Character {
 	// NOTE:ランダム性を出すために100までの数字を出す
 	num := rand.Intn(100)
 
+	// TODO:数字がマジックナンバーだから持たせて定数
 	switch {
 	case num < 80:
 		c.FindByRarityOrderByRand(character.RarityN)
